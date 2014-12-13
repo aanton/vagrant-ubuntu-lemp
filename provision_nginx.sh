@@ -16,7 +16,8 @@ nginx -v
 
 echo ">>> Configuring NGINX"
 
-# Turn off sendfile to be more compatible with Windows, which can't use NFS
+# Turn off sendfile (not necessary if using NFS)
+# http://smotko.si/nginx-static-file-problem/
 sed -i 's/sendfile on;/sendfile off;/' /etc/nginx/nginx.conf
 
 # Set run-as user for PHP5-FPM processes to user/group "vagrant"
