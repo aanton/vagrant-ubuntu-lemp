@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# $1: server_timezone
-# $2: server_swap
+
+SERVER_TIMEZONE=$1
+SWAP_MEMORY=$2 # 0:disabled
 
 ################################################################################
 
-echo ">>> Setting Timezone to $1"
+echo ">>> Setting Timezone to ${SERVER_TIMEZONE}"
 
-echo "$1" > /etc/timezone
+echo "${SERVER_TIMEZONE}" > /etc/timezone
 dpkg-reconfigure -f noninteractive tzdata
 
 ################################################################################
@@ -42,11 +43,11 @@ apt-get install -qq curl unzip git-core software-properties-common build-essenti
 
 SWAP_CHECK=`swapon -s | grep -ic swapfile`
 
-if [[ $2 != false && $2 =~ ^[0-9]*$ && SWAP_CHECK -eq 0 ]]; then
-    echo ">>> Setting up Swap ($2 MB)"
+if [[ ${SWAP_MEMORY} != false && ${SWAP_MEMORY} =~ ^[0-9]*$ && SWAP_CHECK -eq 0 ]]; then
+    echo ">>> Setting up Swap (${SWAP_MEMORY} MB)"
 
     # Create the Swap file
-    fallocate -l $2M /swapfile
+    fallocate -l ${SWAP_MEMORY}M /swapfile
 
     # Set the correct Swap permissions
     chmod 600 /swapfile

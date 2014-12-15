@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# $1: php_timezone
+
+PHP_TIMEZONE=$1
 
 ################################################################################
 
@@ -18,7 +19,7 @@ echo ">>> Installig/updating Composer"
 composer --version 2> /dev/null
 COMPOSER_STATUS=$? # 0:installed
 
-if [[ $COMPOSER_STATUS != "0" ]]; then
+if [[ ${COMPOSER_STATUS} != "0" ]]; then
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
 else
@@ -76,8 +77,8 @@ sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
 sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
 
 # Date Timezone
-sed -i "s/;date.timezone =.*/date.timezone = ${1/\//\\/}/" /etc/php5/fpm/php.ini
-sed -i "s/;date.timezone =.*/date.timezone = ${1/\//\\/}/" /etc/php5/cli/php.ini
+sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/fpm/php.ini
+sed -i "s/;date.timezone =.*/date.timezone = ${PHP_TIMEZONE/\//\\/}/" /etc/php5/cli/php.ini
 
 # opCache
 # https://www.scalingphpbook.com/best-zend-opcache-settings-tuning-config/

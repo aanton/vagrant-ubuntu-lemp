@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# $1: hostname
-# $2: server_ip
-# $3: webserver_docroot
+
+HOSTNAME=$1
+SERVER_PRIVATE_IP=$2
+WEBSERVER_DOCROOT=$3
 
 ################################################################################
 
@@ -37,20 +38,20 @@ service php5-fpm restart
 
 ################################################################################
 
-echo ">>> Configuring $1 host in $2"
+echo ">>> Configuring ${HOSTNAME} host in ${WEBSERVER_DOCROOT}"
 
 # Create server block
 read -d '' NGINX_SITE <<EOF
 server {
     listen 80;
-    server_name $1 $1.$2.xip.io;
+    server_name ${HOSTNAME} ${HOSTNAME}.${SERVER_PRIVATE_IP}.xip.io;
 
-    root $3;
+    root ${WEBSERVER_DOCROOT};
     index index.html index.htm index.php;
     charset utf-8;
 
-    access_log /var/log/nginx/$1-access.log;
-    error_log  /var/log/nginx/$1-error.log error;
+    access_log /var/log/nginx/${HOSTNAME}-access.log;
+    error_log  /var/log/nginx/${HOSTNAME}-error.log error;
 
     location / {
         try_files \$uri \$uri/ /index.php?\$query_string;
@@ -83,13 +84,13 @@ server {
 EOF
 
 # Create docroot directory if not exists
-if [[ ! -d $2 ]]; then
-    mkdir -p $2
+if [[ ! -d ${WEBSERVER_DOCROOT} ]]; then
+    mkdir -p ${WEBSERVER_DOCROOT}
 fi
 
 # Create site & enable it
-echo "$NGINX_SITE" > /etc/nginx/sites-available/$1
-ln -sf /etc/nginx/sites-available/$1 /etc/nginx/sites-enabled/$1
+echo "${NGINX_SITE}" > /etc/nginx/sites-available/${HOSTNAME}
+ln -sf /etc/nginx/sites-available/${HOSTNAME} /etc/nginx/sites-enabled/${HOSTNAME}
 
 # Check enabled sites
 egrep "server_name |root " /etc/nginx/sites-available/*
