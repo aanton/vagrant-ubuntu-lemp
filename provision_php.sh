@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 PHP_TIMEZONE=$1
+PHP_XDEBUG_ENABLED=$2
 
 ################################################################################
 
@@ -67,6 +68,14 @@ xdebug.var_display_max_depth = 5
 xdebug.var_display_max_children = 256
 xdebug.var_display_max_data = 1024
 EOF
+
+if [[ ${PHP_XDEBUG_ENABLED} == "true" ]]; then
+    echo ">>> Enabling XDEBUG"
+    php5enmod xdebug
+else
+    echo ">>> Disabling XDEBUG"
+    php5dismod xdebug
+fi
 
 ################################################################################
 
