@@ -15,10 +15,10 @@ apt-get install -qq php5-memcached
 
 echo ">>> Installig/updating Composer"
 
-composer --version
-COMPOSER_CHECK=$?
+composer --version 2> /dev/null
+COMPOSER_STATUS=$? # 0:installed
 
-if [[ $COMPOSER_CHECK -ne 0 ]]; then
+if [[ $COMPOSER_STATUS != "0" ]]; then
     curl -sS https://getcomposer.org/installer | php
     mv composer.phar /usr/local/bin/composer
 else
