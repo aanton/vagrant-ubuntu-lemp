@@ -27,6 +27,8 @@ else
     composer self-update
 fi
 
+composer --version
+
 ################################################################################
 
 echo ">>> Installing & configuring PHP-FPM"
