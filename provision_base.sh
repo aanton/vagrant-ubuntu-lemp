@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# $1: server_swap
-# $2: server_timezone
+# $1: server_timezone
+# $2: server_swap
 
 ################################################################################
 
-echo ">>> Setting Timezone to $2"
+echo ">>> Setting Timezone to $1"
 
-echo "$2" > /etc/timezone
+echo "$1" > /etc/timezone
 sudo dpkg-reconfigure -f noninteractive tzdata
 
 ################################################################################
@@ -44,11 +44,11 @@ sudo apt-get install -qq curl unzip git-core software-properties-common build-es
 
 SWAP_CHECK=`swapon -s | grep -ic swapfile`
 
-if [[ $1 != false && $1 =~ ^[0-9]*$ && SWAP_CHECK -eq 0 ]]; then
-    echo ">>> Setting up Swap ($1 MB)"
+if [[ $2 != false && $2 =~ ^[0-9]*$ && SWAP_CHECK -eq 0 ]]; then
+    echo ">>> Setting up Swap ($2 MB)"
 
     # Create the Swap file
-    fallocate -l $1M /swapfile
+    fallocate -l $2M /swapfile
 
     # Set the correct Swap permissions
     chmod 600 /swapfile
