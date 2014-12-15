@@ -16,8 +16,8 @@ nginx -v
 
 echo ">>> Configuring NGINX"
 
-# Turn off sendfile (not necessary if using NFS)
-# http://smotko.si/nginx-static-file-problem/
+# There is a VirtualBox bug related to sendfile which can result in corrupted or non-updating files
+# https://docs.vagrantup.com/v2/synced-folders/virtualbox.html
 sed -i 's/sendfile on;/sendfile off;/' /etc/nginx/nginx.conf
 
 # Set run-as user for PHP5-FPM processes to user/group "vagrant"
