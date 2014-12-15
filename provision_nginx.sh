@@ -8,7 +8,7 @@
 echo ">>> Installing NGINX"
 
 # -qq implies -y --force-yes
-sudo apt-get install -qq nginx
+apt-get install -qq nginx
 
 nginx -v
 
@@ -33,7 +33,7 @@ usermod -a -G www-data vagrant
 echo ">>> Configuring PHP-FPM for NGINX"
 
 sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
-sudo service php5-fpm restart
+service php5-fpm restart
 
 ################################################################################
 
@@ -98,6 +98,6 @@ egrep "server_name |root " /etc/nginx/sites-available/*
 
 echo ">>> Restarting NGINX"
 
-sudo service nginx restart
+service nginx restart
 
 ################################################################################

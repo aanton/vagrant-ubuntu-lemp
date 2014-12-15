@@ -8,11 +8,11 @@ echo ">>> Installing MYSQL 5.6"
 
 # Force a blank root password for MySQL
 # https://gist.github.com/sheikhwaqas/9088872
-echo "mysql-server-5.6 mysql-server/root_password password $1" | sudo debconf-set-selections
-echo "mysql-server-5.6 mysql-server/root_password_again password $1" | sudo debconf-set-selections
+echo "mysql-server-5.6 mysql-server/root_password password $1" | debconf-set-selections
+echo "mysql-server-5.6 mysql-server/root_password_again password $1" | debconf-set-selections
 
 # -qq implies -y --force-yes
-sudo apt-get install -qq mysql-server-5.6 mysql-client-5.6
+apt-get install -qq mysql-server-5.6 mysql-client-5.6
 
 ################################################################################
 
@@ -26,7 +26,7 @@ if [[ $2 == true ]]; then
     MYSQL_QUERY="GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY '$1' WITH GRANT OPTION;FLUSH PRIVILEGES;"
     mysql -uroot -p$1 -e "$MYSQL_QUERY"
 
-    sudo service mysql restart
+    service mysql restart
 fi
 
 ################################################################################

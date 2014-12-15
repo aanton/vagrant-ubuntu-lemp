@@ -80,6 +80,7 @@ Vagrant.configure("2") do |config|
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
 
+    # By default shell provisioning use a privileged user to execute scripts
     config.vm.provision :shell, path: "provision_base.sh", args: [server_timezone, server_swap_enabled ? server_swap_memory : 0]
     config.vm.provision :shell, path: "provision_php.sh", args: [php_timezone]
     config.vm.provision :shell, path: "provision_nginx.sh", args: [hostname, server_private_ip, webserver_docroot]

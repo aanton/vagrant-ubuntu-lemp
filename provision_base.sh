@@ -7,13 +7,13 @@
 echo ">>> Setting Timezone to $1"
 
 echo "$1" > /etc/timezone
-sudo dpkg-reconfigure -f noninteractive tzdata
+dpkg-reconfigure -f noninteractive tzdata
 
 ################################################################################
 
 echo ">>> Setting default Locale (C.UTF-8)"
 
-sudo locale-gen C.UTF-8
+locale-gen C.UTF-8
 export LANGUAGE=C.UTF-8
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
@@ -23,22 +23,20 @@ echo "export LANGUAGE=C.UTF-8" >> /home/vagrant/.bashrc
 echo "export LANG=C.UTF-8" >> /home/vagrant/.bashrc
 echo "export LC_ALL=C.UTF-8" >> /home/vagrant/.bashrc
 
-# sudo locale-gen es_ES.UTF-8 # spanish
-
 ################################################################################
 
 echo ">>> Optimizing apt sources to select best mirror"
 
-sudo perl -pi -e 's@^\s*(deb(\-src)?)\s+http://us.archive.*?\s+@\1 mirror://mirrors.ubuntu.com/mirrors.txt @g' /etc/apt/sources.list
+perl -pi -e 's@^\s*(deb(\-src)?)\s+http://us.archive.*?\s+@\1 mirror://mirrors.ubuntu.com/mirrors.txt @g' /etc/apt/sources.list
 
-sudo apt-get update -q
+apt-get update -q
 
 ################################################################################
 
 echo ">>> Installing Base Packages"
 
 # -qq implies -y --force-yes
-sudo apt-get install -qq curl unzip git-core software-properties-common build-essential
+apt-get install -qq curl unzip git-core software-properties-common build-essential
 
 ################################################################################
 
