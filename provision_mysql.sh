@@ -17,7 +17,7 @@ apt-get install -qq mysql-server-5.6 mysql-client-5.6
 
 ################################################################################
 
-if [[ ${MYSQL_REMOTE_ENABLED} == true ]]; then
+if [[ ${MYSQL_REMOTE_ENABLED} == "true" ]]; then
     echo ">>> Configuring MYSQL remote access"
 
     # Make MySQL connectable from outside world without SSH tunnel
