@@ -26,21 +26,6 @@ echo "export LC_ALL=C.UTF-8" >> /home/vagrant/.bashrc
 
 ################################################################################
 
-echo ">>> Optimizing apt sources to select best mirror"
-
-perl -pi -e 's@^\s*(deb(\-src)?)\s+http://us.archive.*?\s+@\1 mirror://mirrors.ubuntu.com/mirrors.txt @g' /etc/apt/sources.list
-
-apt-get update -q
-
-################################################################################
-
-echo ">>> Installing Base Packages"
-
-# -qq implies -y --force-yes
-apt-get install -qq curl unzip git-core software-properties-common build-essential
-
-################################################################################
-
 swapon -s | grep -i swapfile > /dev/null
 SWAP_STATUS=$? # 0:enabled
 
@@ -75,5 +60,19 @@ fi
 
 echo ">>> Checking Swap"
 swapon -s
+
+################################################################################
+
+echo ">>> Optimizing apt sources to select best mirror"
+
+perl -pi -e 's@^\s*(deb(\-src)?)\s+http://us.archive.*?\s+@\1 mirror://mirrors.ubuntu.com/mirrors.txt @g' /etc/apt/sources.list
+apt-get update -q
+
+################################################################################
+
+echo ">>> Installing Base Packages"
+
+# -qq implies -y --force-yes
+apt-get install -qq curl unzip git-core software-properties-common build-essential
 
 ################################################################################
