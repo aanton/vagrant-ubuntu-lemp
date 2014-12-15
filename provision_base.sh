@@ -41,30 +41,39 @@ apt-get install -qq curl unzip git-core software-properties-common build-essenti
 
 ################################################################################
 
-SWAP_CHECK=`swapon -s | grep -ic swapfile`
+swapon -s | grep -i swapfile > /dev/null
+SWAP_STATUS=$? # 0:enabled
 
-if [[ ${SWAP_MEMORY} != false && ${SWAP_MEMORY} =~ ^[0-9]*$ && SWAP_CHECK -eq 0 ]]; then
-    echo ">>> Setting up Swap (${SWAP_MEMORY} MB)"
+if [[ ${SWAP_MEMORY} != "0" && ${SWAP_STATUS} != "0" ]]; then
+    echo ">>> Enabling Swap (${SWAP_MEMORY} MB)"
 
-    # Create the Swap file
-    fallocate -l ${SWAP_MEMORY}M /swapfile
-
-    # Set the correct Swap permissions
-    chmod 600 /swapfile
-
-    # Setup Swap space
-    mkswap /swapfile
-
-    # Enable Swap space
-    swapon /swapfile
+    fallocate -l ${SWAP_MEMORY}M /swapfile # Create the Swap file
+    chmod 600 /swapfile # Set the correct Swap permissions
+    mkswap /swapfile # Setup Swap space
+    swapon /swapfile # Enable Swap space
 
     # Make the Swap file permanent
-    echo "/swapfile   none    swap    sw    0   0" | tee -a /etc/fstab
+    echo "/swapfile   none    swap    sw    0   0" >> /etc/fstab
 
-    # Add some swap settings:
+    # Swap settings
     # vm.swappiness=10: Means that there wont be a Swap file until memory hits 90% useage
-    # vm.vfs_cache_pressure=50: read http://rudd-o.com/linux-and-free-software/tales-from-responsivenessland-why-linux-feels-slow-and-how-to-fix-that
-    printf "vm.swappiness=10\nvm.vfs_cache_pressure=50" | tee -a /etc/sysctl.conf && sysctl -p
+    # vm.vfs_cache_pressure=50: http://rudd-o.com/linux-and-free-software/tales-from-responsivenessland-why-linux-feels-slow-and-how-to-fix-that
+    echo "vm.swappiness=10" >> /etc/sysctl.conf
+    echo "vm.vfs_cache_pressure=50" >> /etc/sysctl.conf
+    sysctl -p
 fi
+
+if [[ ${SWAP_MEMORY} == "0" && ${SWAP_STATUS} == "0" ]]; then
+    echo ">>> Disabling Swap"
+
+    swapoff -a
+    perl -pi -e "s#/swapfile.*\n##" /etc/fstab
+    perl -pi -e "s#vm\.swappiness.*\n##" /etc/sysctl.conf
+    perl -pi -e "s#vm\.vfs_cache_pressure.*\n##" /etc/sysctl.conf
+    sysctl -p
+fi
+
+echo ">>> Checking Swap"
+swapon -s
 
 ################################################################################
