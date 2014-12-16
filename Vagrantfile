@@ -84,7 +84,7 @@ Vagrant.configure("2") do |config|
     # By default shell provisioning use a privileged user to execute scripts
     config.vm.provision :shell, path: "provision_base.sh", args: [server_timezone, server_swap_enabled ? server_swap_memory : 0]
     config.vm.provision :shell, path: "provision_php.sh", args: [php_timezone, php_xdebug_enabled.to_s]
-    config.vm.provision :shell, path: "provision_nginx.sh", args: [hostname, server_private_ip, webserver_docroot]
     config.vm.provision :shell, path: "provision_mysql.sh", args: [mysql_root_password, mysql_remote_enabled.to_s]
+    config.vm.provision :shell, path: "provision_nginx.sh", args: [hostname, server_private_ip, webserver_docroot]
 
 end
