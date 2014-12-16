@@ -57,7 +57,7 @@ cd vagrant-ubuntu-lemp
 
 ### 2. Configuration
 
-See `Vagrantfile`
+See [Vagrantfile](https://github.com/aanton/vagrant-ubuntu-lemp/blob/master/Vagrantfile)
 
 ### 3. Create the environment
 
