@@ -13,9 +13,9 @@ port_mapping_enabled = false
 nfs_enabled = false
 
 server_cpus = 1
-server_memory = 512
+server_memory = 1024
 server_swap_enabled = true
-server_swap_memory = 768 # Between 1x or 2x server_memory
+server_swap_memory = 1024 # Between 1x or 2x server_memory
 server_timezone = "UTC"
 server_private_ip = "192.168.10.10"
 
