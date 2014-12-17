@@ -7,6 +7,10 @@ PHP_XDEBUG_ENABLED=$2
 
 echo ">>> Installing PHP"
 
+# Add repository with the latest PHP packages
+add-apt-repository -y ppa:ondrej/php5
+apt-get update -q
+
 # -qq implies -y --force-yes
 apt-get install -qq php5-cli
 apt-get install -qq php5-curl php5-gd php5-imagick php5-json php5-mcrypt

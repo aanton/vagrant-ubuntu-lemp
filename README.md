@@ -27,12 +27,12 @@ This project automates the setup of a LEMP development environment with Ubuntu 1
 
 ### MySQL provisioner
 
-* MySQL 5.6 ([official Ubuntu package](http://packages.ubuntu.com/trusty/mysql/database/))
+* MySQL 5.6 ([latest packages](https://launchpad.net/~ondrej/+archive/ubuntu/mysql-5.6))
 * Optionally, remote access settings
 
 ### PHP provisioner
 
-* PHP 5.5 ([official Ubuntu package](http://packages.ubuntu.com/trusty/php/))
+* PHP 5.5 ([latest packages](https://launchpad.net/~ondrej/+archive/ubuntu/php5))
 * PHP-FPM
 * Composer
 * Optionally, xDebug
