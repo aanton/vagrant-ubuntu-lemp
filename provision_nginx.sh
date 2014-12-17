@@ -50,19 +50,20 @@ server {
     index index.html index.htm index.php;
     charset utf-8;
 
-    access_log /var/log/nginx/${HOSTNAME}-access.log;
-    error_log  /var/log/nginx/${HOSTNAME}-error.log error;
+    # /var/log/nginx/${HOSTNAME}-access.log;
+    access_log off;
+    error_log /var/log/nginx/${HOSTNAME}-error.log error;
 
     location / {
         try_files \$uri \$uri/ /index.php?\$query_string;
     }
 
-    location = /favicon.ico { log_not_found off; access_log off; }
-    location = /robots.txt  { access_log off; log_not_found off; }
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt { access_log off; log_not_found off; }
 
     error_page 404 /index.php;
 
-    # pass the PHP scripts to php5-fpm
+    # Pass the PHP scripts to php5-fpm
     # Note: \.php$ is susceptible to file upload attacks
     # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
     location ~ \.php$ {
