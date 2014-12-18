@@ -31,13 +31,6 @@ usermod -a -G www-data vagrant
 
 ################################################################################
 
-echo ">>> Configuring PHP-FPM for NGINX"
-
-sed -i "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/" /etc/php5/fpm/php.ini
-service php5-fpm restart
-
-################################################################################
-
 echo ">>> Configuring ${HOSTNAME} host in ${WEBSERVER_DOCROOT}"
 
 # Create server block
@@ -45,12 +38,12 @@ read -d '' NGINX_SITE <<EOF
 server {
     listen 80;
     server_name ${HOSTNAME} ${HOSTNAME}.${SERVER_PRIVATE_IP}.xip.io;
-
     root ${WEBSERVER_DOCROOT};
+
     index index.html index.htm index.php;
     charset utf-8;
 
-    # /var/log/nginx/${HOSTNAME}-access.log;
+    # access_log /var/log/nginx/${HOSTNAME}-access.log;
     access_log off;
     error_log /var/log/nginx/${HOSTNAME}-error.log error;
 
@@ -63,18 +56,17 @@ server {
 
     error_page 404 /index.php;
 
-    # Pass the PHP scripts to php5-fpm
-    # Note: \.php$ is susceptible to file upload attacks
-    # Consider using: "location ~ ^/(index|app|app_dev|config)\.php(/|$) {"
+    # http://wiki.nginx.org/PHPFcgiExample
     location ~ \.php$ {
-        try_files \$uri =404;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        # With php5-fpm:
-        fastcgi_pass 127.0.0.1:9000;
+        fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+        if (!-f \$document_root\$fastcgi_script_name) {
+            return 404;
+        }
+
+        # fastcgi_pass unix:/var/run/php5-fpm.sock; # using unix socket
+        fastcgi_pass 127.0.0.1:9000; # using TCP
         fastcgi_index index.php;
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
-        fastcgi_param HTTPS off;
     }
 
     # Deny .htaccess file access
