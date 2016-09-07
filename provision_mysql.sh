@@ -9,12 +9,8 @@ echo ">>> Installing MYSQL 5.6"
 
 # Force a blank root password for MySQL
 # https://gist.github.com/sheikhwaqas/9088872
-echo "mysql-server-5.6 mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}" | debconf-set-selections
-echo "mysql-server-5.6 mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}" | debconf-set-selections
-
-# Add repository with the latest MySQL packages
-add-apt-repository -y ppa:ondrej/mysql-5.6
-apt-get update -q
+echo "mysql-server mysql-server/root_password password ${MYSQL_ROOT_PASSWORD}" | debconf-set-selections
+echo "mysql-server mysql-server/root_password_again password ${MYSQL_ROOT_PASSWORD}" | debconf-set-selections
 
 # -qq implies -y --force-yes
 apt-get install -qq mysql-server-5.6 mysql-client-5.6

@@ -36,7 +36,7 @@ echo ">>> Configuring ${HOSTNAME} host in ${WEBSERVER_DOCROOT}"
 # Create server block
 read -d '' NGINX_SITE <<EOF
 server {
-    listen 80;
+    listen 8080;
     server_name ${HOSTNAME} ${HOSTNAME}.${SERVER_PRIVATE_IP}.xip.io;
     root ${WEBSERVER_DOCROOT};
 
